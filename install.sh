@@ -3,8 +3,16 @@ wget https://repo.zabbix.com/zabbix/7.2/release/debian/pool/main/z/zabbix-releas
 sudo dpkg -i zabbix-release_latest_7.2+debian12_all.deb
 sudo apt update
 sudo apt install zabbix-agent -y
-sudo nano /etc/zabbix/zabbix_agentd.conf
-echo "Line 1
-Line 2
-Line 3" | sudo tee /path/to/file
+source .env
+echo "PidFile=$PidFile
+LogFile=$LogFile
+LogFileSize=$LogFileSize
+# DebugLevel=3
+LogRemoteCommands=$LogRemoteCommands
+Server=$Server
+ServerActive=$ServerActive
+HostnameItem=$HostnameItem
+HostMetadata=$HostMetadata
+HostMetadataItem=$HostMetadataItem
+Include=$Include" | sudo tee /etc/zabbix/zabbix_agentd.conf
 
