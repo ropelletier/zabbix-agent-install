@@ -4,3 +4,7 @@ sudo dpkg -i zabbix-release_latest_7.2+debian12_all.deb
 sudo apt update
 sudo apt install zabbix-agent -y
 sudo nano /etc/zabbix/zabbix_agentd.conf
+echo "Line 1
+Line 2
+Line 3" | sudo tee /path/to/file
+
