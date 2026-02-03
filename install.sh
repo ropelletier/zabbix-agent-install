@@ -1,8 +1,27 @@
 #!/bin/bash
+### A hacked together script to install zabbix agent on debian or ubuntu ditros #####
 source .env
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    NAME="${NAME,,}"
+    NAME=${NAME//' gnu/linux'}
+    echo "Distributor: $NAME"
+    echo "Version: $VERSION_ID"
+elif command -v lsb_release &> /dev/null; then
+    NAME=$(lsb_release -i -s)
+    NAME="${NAME,,}"
+    NAME=${NAME//' gnu/linux'}
+    VERSION_ID=$(lsb_release -r -s)
+    echo "Distributor: $NAME"
+    echo "Version: $VERSION_ID"
+else
+    echo "Could not determine OS version using standard methods."
+    cat /etc/issue
+fi
 
-wget https://repo.zabbix.com/zabbix/7.2/release/debian/pool/main/z/zabbix-release/zabbix-release_latest_7.2+debian12_all.deb
-sudo dpkg -i zabbix-release_latest_7.2+debian12_all.deb
+rm -Rf zabbix-release_latest*
+wget https://repo.zabbix.com/zabbix/${Zabbix_Version}/release/$NAME/pool/main/z/zabbix-release/zabbix-release_latest_${Zabbix_Version}+$NAME${VERSION_ID}_all.deb
+sudo dpkg -i zabbix-release_latest_${Zabbix_Version}+$NAME${VERSION_ID}_all.deb
 sudo apt update
 sudo apt install zabbix-agent -y
 source .env
